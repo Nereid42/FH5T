@@ -25,12 +25,6 @@ exports.HttpServer = class {
             else {
                 this.processFileRequest(request, response);
             }
-        
-                
-            if(url=="/STOP") {
-                console.log("STOP received");
-                process.exit();        
-            }
         });
     }
 
