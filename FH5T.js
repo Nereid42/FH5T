@@ -2,8 +2,10 @@ const { exec } = require('child_process');
 const process = require('process');
 
 const http = require("./js/http/http.js");
+const udp = require("./js/network/udp.js")
 
-const PORT=8000;
+const UDP_PORT=7999;
+const HTTP_PORT=8000;
 
 function exit(response) {
     console.log("process exit");
@@ -15,9 +17,12 @@ function exit(response) {
 console.log("starting FH5T");
 //
 // start HTTP server
-const server = new http.HttpServer(PORT, __dirname+"/html");
+const server = new http.HttpServer(HTTP_PORT, __dirname+"/html");
 server.register("/stop-server",exit);
 server.start();
+//
+// start udp receiver
+const receiver = new udp.Receiver(UDP_PORT);
 //
 // open browser
 const URL="http://localhost:"+PORT+"/index.html";
