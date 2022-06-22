@@ -8,12 +8,17 @@
         <script type="text/javascript" src="js/canvas/graph.js"></script>
         <script type="text/javascript" src="js/data/telemetry.js"></script>
 
-        <title>My Website</title>
+        <title>FH5T</title>
         <link rel="stylesheet" href="css/style.css">
     </head>
 
     <body>
         <script>
+            window.onbeforeunload = function(){
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "stop-server", true);
+                xhttp.send();
+             }
             window.onload = function() {
                 var canvas = document.getElementById("myCanvas");
                 console.log("canvas width "+canvas.width);
@@ -60,6 +65,10 @@
                         const xhttp = new XMLHttpRequest();
                         xhttp.open("GET", "stop-server", true);
                         xhttp.send();
+                        document.getElementById("content").innerHTML = '<div class="banner">Process stopped</div>';
+                        setTimeout(function() {
+                            window.close();
+                        }, 2000);
                     }
                 </script>
                 <div id="clock">
@@ -69,9 +78,7 @@
             </div>
         </div>
 
-        <div>
-
-    
+        <div  id="content">
             <div>
                 <canvas class="telemetry" id="myCanvas" width="2000" height="200"></canvas>
             </div>    

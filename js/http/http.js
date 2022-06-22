@@ -65,7 +65,7 @@ exports.HttpServer = class {
             console.error('file '+path+" cannot be accessed");
             response.writeHead(404);
             response.end();    
-});  
+        });  
 
     }
 
@@ -75,7 +75,7 @@ exports.HttpServer = class {
             this.running = true;
             this.server.listen(this.port, "127.0.0.1", () => {
                 console.log("Server is running on http://127.0.0.1:${this.port}");
-            });
+            }); 
         }
     }
 

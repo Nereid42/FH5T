@@ -46,6 +46,7 @@ canvas {
    padding: 5px;
 }
 
+
 div#clock {
     display: inline-block;
     vertical-align: 15%;
@@ -59,6 +60,22 @@ div#clock {
     padding: 0px;
     float: inline-start;
 }
+
+div.error {
+    font-size: 30px;
+    height:100%;
+    text-align: center;
+    color:crimson;
+}
+
+div.banner {
+    display:block;    
+    font-size: 30px;
+    height:100%;
+    text-align: center;
+    color:crimson;
+}
+
 
 div.header {
     background-color: cornflowerblue;

@@ -1,0 +1,1 @@
+CreateObject("Wscript.Shell").Run ".\bin\FH5T.bat", 0, True 
