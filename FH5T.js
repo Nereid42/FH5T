@@ -25,6 +25,6 @@ server.start();
 const receiver = new udp.Receiver(UDP_PORT);
 //
 // open browser
-const URL="http://localhost:"+PORT+"/index.html";
+const URL="http://localhost:"+HTTP_PORT+"/index.html";
 exec('start /max '+URL);    
 
