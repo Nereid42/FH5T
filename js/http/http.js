@@ -56,7 +56,7 @@ exports.HttpServer = class {
         if(!this.running) {
             this.running = true;
             this.server.listen(this.port, "127.0.0.1", () => {
-                console.log("Server is running on http://${host}:${port}");
+                console.log("Server is running on http://127.0.0.1:${this.port}");
             });
         }
     }
