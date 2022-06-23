@@ -3,15 +3,59 @@ const Buffer = require("buffer").Buffer;
 
 exports.Fh5Datagram = class {
     constructor(buf) {
-        this.isRaceOn = buf.readInt32LE(0);
-        this.timestampMS = buf.readInt32LE(4);
-        this.engineIdleRpm = buf.readFloatLE(8);
-        this.engineMaxRpm = buf.readFloatLE(12);
-        this.currentEngineRpm = buf.readFloatLE(16);
+        this.data = [];
+        this.buffer = buf;
+
+        this.index=0;
+        this.pos=0;
+        this.readInt(2);
+        this.readFloatAsInt(3);
+        this.readFloat(5);
+
+        /*var index=0;
+        this.isRaceOn = this.data[index++];
+        this.timestampMS = this.data[index++];
+        this.engineIdleRpm =  this.data[index++];
+        this.engineMaxRpm = this.data[index++];
+        this.currentEngineRpm = this.data[index++];
+        this.accellerationX = this.data[index++];
+        this.accellerationY = this.data[index++];
+        this.accellerationZ = this.data[index++];
+        this.velocityX = this.data[index++];
+        this.velocityY = this.data[index++];*/
+    }
+    
+    readInt(n) {
+        for(var i=0; i<n; i++) {
+            this.data[this.index++] = this.buffer.readInt32LE(this.pos);
+            this.pos += 4;
+        }
     }
 
+    readFloat(n) {
+        for(var i=0; i<n; i++) {
+            this.data[this.index++] = this.buffer.readFloatLE(this.pos);
+            this.pos += 4;
+        }
+    }    
+
+    readFloatAsInt(n) {
+        for(var i=0; i<n; i++) {
+            this.data[this.index++] = Math.trunc(this.buffer.readFloatLE(this.pos)+0.5);
+            this.pos += 4;
+        }
+    }    
+
+
     toString() {
-        return "FH5D: race=" + this.isRaceOn + " / ts="+this.timestampMS  + " / EngMaxRpm=" + this.engineMaxRpm + " / EngIdleRpm=" + this.engineIdleRpm + " / EngCurRpm="+this.currentEngineRpm;
+        var result = "";
+        for(var i=0; i<this.data.length; i++) {
+            if(i>0) {
+                result += " ";
+            }
+            result += this.data[i].toString();
+        }
+        return result;
     }
 }
 

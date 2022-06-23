@@ -21,10 +21,7 @@ DATAGRAMS = new queue.Blocking();
 async function supply(response) {
     datagram = await DATAGRAMS.pull();
     response.writeHead(200);
-    var rpm_max = Math.trunc(datagram.engineIdleRpm).toString();
-    var rpm_idle = Math.trunc(datagram.engineMaxRpm).toString();
-    var rpm = Math.trunc(datagram.currentEngineRpm).toString();
-    response.end(datagram.isRaceOn.toString() + " " + rpm_max+" " + rpm_idle + " " + rpm);      
+    response.end(datagram.toString());      
 }
 
 console.log("starting FH5T");

@@ -5,6 +5,7 @@
         <script type="text/javascript" src="js/util/clock.js"></script>
         <script type="text/javascript" src="js/util/time.js"></script>
         <script type="text/javascript" src="js/canvas/graph.js"></script>
+        <script type="text/javascript" src="js/data/constants.js"></script>
         <script type="text/javascript" src="js/data/telemetry.js"></script>
 
         <title>FH5T</title>
@@ -13,13 +14,12 @@
 
     <body>
         <script>
-
             const TELEMETRY_RPM = new Telemetry("RPM");
 
             function _update() {
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
-                    console.log("update: "+this.responseText);
+                    //console.log("update: "+this.responseText);
                     var token = this.responseText.split(" ");
                     var race = document.getElementById("race");
                     if(token[0] == "1") {
@@ -31,9 +31,10 @@
 
                     // === RPM ===
                     var maxRpmLabel = document.getElementById("rpm-max");
-                    var sMaxRpm = token[1];
+                    var sMaxRpm = token[DATA_INDEX_RPM_MAX];
+                    var sCurRpm = token[DATA_INDEX_RPM_CURRENT];
                     maxRpmLabel.innerHTML = sMaxRpm; 
-                    TELEMETRY_RPM.sample(parseInt(token[3]));
+                    TELEMETRY_RPM.sample(parseInt(sCurRpm));
                     var rpmCanvas = document.getElementById("rpm-canvas");
                     drawTelemetryAsBars(TELEMETRY_RPM, rpmCanvas, parseInt(sMaxRpm));
                     update();
@@ -124,29 +125,59 @@
             </div>
             <div class="telemetry-container">
                 <p class="telemetry-title">Reserved</p>
-                <canvas class="telemetry" id="canvas-2" width="800" height="150"></canvas>                
+                <div>
+                    <div class="label">
+                            <p class="top-label">00000</p>
+                            <p class="bottom-label">0</p>
+                        </p>
+                    </div>
+                    <canvas class="telemetry" id="canvas-2" width="800" height="150"></canvas>                
+                </div>    
             </div>
             <div class="telemetry-container">
                 <p class="telemetry-title">Reserved</p>
-                <canvas class="telemetry" id="canvas-3" width="800" height="150"></canvas>
+                <div>
+                    <div class="label">
+                            <p class="top-label">00000</p>
+                            <p class="bottom-label">0</p>
+                        </p>
+                    </div>
+                    <canvas class="telemetry" id="canvas-3" width="800" height="150"></canvas>
+                </div>
             </div>    
             <div class="telemetry-container">
                 <p class="telemetry-title">Reserved</p>
-                <canvas class="telemetry" id="canvas-4" width="800" height="150"></canvas>
+                <div>
+                    <div class="label">
+                            <p class="top-label">00000</p>
+                            <p class="bottom-label">0</p>
+                        </p>
+                    </div>                
+                    <canvas class="telemetry" id="canvas-4" width="800" height="150"></canvas>
+                </div>
             </div>    
             <div class="telemetry-container">
                 <p class="telemetry-title">Reserved</p>
-                <canvas class="telemetry" id="canvas-5" width="800" height="150"></canvas>
+                <div>
+                    <div class="label">
+                            <p class="top-label">00000</p>
+                            <p class="bottom-label">0</p>
+                        </p>
+                    </div>
+                    <canvas class="telemetry" id="canvas-5" width="800" height="150"></canvas>
+                </div>
             </div>    
             <div class="telemetry-container">
                 <p class="telemetry-title">Reserved</p>
-                <canvas class="telemetry" id="canvas-6" width="800" height="150"></canvas>
+                <div>
+                    <div class="label">
+                            <p class="top-label">00000</p>
+                            <p class="bottom-label">0</p>
+                        </p>
+                    </div>
+                    <canvas class="telemetry" id="canvas-6" width="800" height="150"></canvas>
+                </div>
             </div>    
-        </div>
-
-
-        <footer>
-            Author: A. Kolster
-        </footer>    
+        </div>  
     </body>
 </html>
