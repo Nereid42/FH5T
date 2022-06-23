@@ -5,8 +5,8 @@ exports.Fh5Datagram = class {
     constructor(buf) {
         this.isRaceOn = buf.readInt32LE(0);
         this.timestampMS = buf.readInt32LE(4);
-        this.engineMaxRpm = buf.readFloatLE(8);
-        this.engineIdleRpm = buf.readFloatLE(12);
+        this.engineIdleRpm = buf.readFloatLE(8);
+        this.engineMaxRpm = buf.readFloatLE(12);
         this.currentEngineRpm = buf.readFloatLE(16);
     }
 

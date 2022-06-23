@@ -14,8 +14,6 @@ exports.HttpServer = class {
         this.server = http.createServer( (request, response) => {
             const url = request.url;
     
-            console.log("request "+url);
-
             var func =  this.registeredUrls[url];
             
             if(func !== undefined) {

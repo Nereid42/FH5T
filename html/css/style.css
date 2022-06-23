@@ -40,6 +40,7 @@ footer {
 
 canvas.telemetry {
     display: inline-block;
+    vertical-align: text-top;    
     width: 800px;
     height: 150px;
     border-style: ridge; 
@@ -49,10 +50,9 @@ canvas.telemetry {
     padding: 5px;
 }
 
-div.telemetry {
+div.telemetry-container {
     display: inline-block;
     margin: 3px;
-    background-color:coral ;
     float:left;
 }
 
@@ -65,7 +65,7 @@ p.telemetry-title {
 
 div.label {
     display:inline-block;
-    background-color: blue;
+    vertical-align: text-top;    
     height: 150px;
     margin:0px;
     gap:0px;
@@ -77,16 +77,21 @@ div.label p {
 }
 
 p.top-label {
+    height: 14px;
     margin: 0px;
-    height: 100%;
-    vertical-align: text-top;
-    background-color: red;
+    margin-top: 4px;
+    margin-bottom: 130px;    
+    border: 2px ridge darkturquoise;
+    text-align: right;
+    padding-left: 5px;
 }
 
 p.bottom-label {
     margin: 0px;
-    vertical-align: text-bottom;
-    margin-top: auto;
+    height: 14px;
+    border: 2px ridge darkturquoise;
+    text-align: right;
+    padding-left: 5px;
 }
 
 

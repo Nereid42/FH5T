@@ -13,24 +13,37 @@
 
     <body>
         <script>
-            function _updateRace() {
+
+            const TELEMETRY_RPM = new Telemetry("RPM");
+
+            function _update() {
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
+                    console.log("update: "+this.responseText);
+                    var token = this.responseText.split(" ");
                     var race = document.getElementById("race");
-                    if(this.responseText == "1") {
+                    if(token[0] == "1") {
                         race.style.backgroundColor = "#30FF30";
                     }
                     else {
                         race.style.backgroundColor = "crimson";
                     }
+
+                    // === RPM ===
+                    var maxRpmLabel = document.getElementById("rpm-max");
+                    var sMaxRpm = token[1];
+                    maxRpmLabel.innerHTML = sMaxRpm; 
+                    TELEMETRY_RPM.sample(parseInt(token[3]));
+                    var rpmCanvas = document.getElementById("rpm-canvas");
+                    drawTelemetryAsBars(TELEMETRY_RPM, rpmCanvas, parseInt(sMaxRpm));
+                    update();
                 }                
                 xhttp.open("GET", "datagram", true);
                 xhttp.send();
-                updateRace();
             }
 
-            function updateRace() {
-                setTimeout(_updateRace,10);
+            function update() {
+                setTimeout(_update,10);
             }
 
 
@@ -43,25 +56,21 @@
                 var canvas1 = document.getElementById("canvas-1");
                 var canvas2 = document.getElementById("canvas-2");
                 var canvas3 = document.getElementById("canvas-3");
+                var canvas4 = document.getElementById("canvas-4");
+                var canvas5 = document.getElementById("canvas-5");
+                var canvas6 = document.getElementById("canvas-6");
 
                 startclock();
 
-                updateRace();
-
-                const t = new Telemetry("Versuch-1");
-                for(var i=1; i<=5; i++) {
-                    t.sample(Math.random());
-                    //console.log(i + " t is "+t)    
-                }
-                console.log("first time = "+t.getFirstTime());
-                console.log("last time  = "+t.getLastTime());
-                drawTelemetryAsBars(t,canvas1);
+                update();
 
                 function receiveData() {
-                    t.sample(Math.random());
-                    drawTelemetryAsBars(t,canvas1);
-                    drawTelemetryAsBars(t,canvas2);
-                    drawTelemetryAsBars(t,canvas3);
+                    //TELEMETRY_RPM.sample(Math.random());
+                    drawTelemetryAsBars(TELEMETRY_RPM, canvas2, TELEMETRY_RPM.max);
+                    drawTelemetryAsBars(TELEMETRY_RPM, canvas3, TELEMETRY_RPM.max);
+                    drawTelemetryAsBars(TELEMETRY_RPM, canvas4, TELEMETRY_RPM.max);
+                    drawTelemetryAsBars(TELEMETRY_RPM, canvas5, TELEMETRY_RPM.max);
+                    drawTelemetryAsBars(TELEMETRY_RPM, canvas6, TELEMETRY_RPM.max);
                 }
 
                 setInterval(receiveData,30);
@@ -102,10 +111,36 @@
         </div>
 
         <div  id="content">
-            <div>
-                <canvas class="telemetry" id="canvas-1" width="2000" height="200"></canvas>
-                <canvas class="telemetry" id="canvas-2" width="2000" height="200"></canvas>
-                <canvas class="telemetry" id="canvas-3" width="2000" height="200"></canvas>
+            <div class="telemetry-container">
+                <p class="telemetry-title">RPM</p>
+                <div>
+                    <div class="label">
+                            <p class="top-label" id="rpm-max">00000</p>
+                            <p class="bottom-label">0</p>
+                        </p>
+                    </div>
+                    <canvas class="telemetry" id="rpm-canvas" width="800" height="150"></canvas>
+                </div>
+            </div>
+            <div class="telemetry-container">
+                <p class="telemetry-title">Reserved</p>
+                <canvas class="telemetry" id="canvas-2" width="800" height="150"></canvas>                
+            </div>
+            <div class="telemetry-container">
+                <p class="telemetry-title">Reserved</p>
+                <canvas class="telemetry" id="canvas-3" width="800" height="150"></canvas>
+            </div>    
+            <div class="telemetry-container">
+                <p class="telemetry-title">Reserved</p>
+                <canvas class="telemetry" id="canvas-4" width="800" height="150"></canvas>
+            </div>    
+            <div class="telemetry-container">
+                <p class="telemetry-title">Reserved</p>
+                <canvas class="telemetry" id="canvas-5" width="800" height="150"></canvas>
+            </div>    
+            <div class="telemetry-container">
+                <p class="telemetry-title">Reserved</p>
+                <canvas class="telemetry" id="canvas-6" width="800" height="150"></canvas>
             </div>    
         </div>
 
