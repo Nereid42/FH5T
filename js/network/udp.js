@@ -7,7 +7,7 @@ exports.Fh5Datagram = class {
         this.buffer = buf;
 
         this.index=0;
-        this.pos=0;
+        this.offset=0;
         // 0-1 0 race & timestamp
         this.readInt32(2);
         // 2-4 8 rpm (current, idle, max)
@@ -46,44 +46,40 @@ exports.Fh5Datagram = class {
         this.readInt32(1)
         // 58 232 car category -- V2
         this.readInt32(1)
-        // 59 236 unknown (crashing)
-        this.readInt32(1)
-        // 60-62 240 position x, y, z
+        // 59-66 236 unknown (crashing)
+        this.readInt8(8)
+        // 66-68 244 position x, y, z
         this.readFloat(3);
-        // 63-65 252 speed, power, torque
+        // 69-71 256 speed, power, torque
         this.readFloat(3);
-        // 66-69 264 tire temp
+        // 66-69 268 tire temp
         this.readFloat(4);
-        // 70-71 280 boost, fuel
+        // 70-71 284 boost, fuel
         this.readFloat(2);
-        // 72 288 distance traveled
+        // 72 292 distance traveled
         this.readFloat(1);
-        // 73-75 292 best lap, last lab, current lap
+        // 73-75 296 best lap, last lab, current lap
         this.readFloat(3);
-        // 76 304 current race time
+        // 76 308 current race time
         this.readFloat(1);
-        // 77 308 lap numer
+        // 77 312 lap numer
         this.readInt16(1);
-        // 78 310 race position
+        // 78 314 race position
         this.readInt8(1);
-        // 79 311 throttle
+        // 79 315 throttle
         this.readInt8(1);
-        // 80 312 brake
+        // 80 316 brake
         this.readInt8(1);
-        // 81 313 clutch
+        // 81 317 clutch
         this.readInt8(1);
-        // 82 314 handbrake
+        // 82 318 handbrake
         this.readInt8(1);
-        // 83 315 gear
+        // 83 319 gear
         this.readInt8(1);
-        // 84-86 316 steer, driving lane, normalized brake diff
-        this.readInt8(3);
-        // 87 319 unknown
-        this.readInt8(1);
-        // 88 320 unknown
-        this.readInt8(1);
-        // 320
-        console.log("end  at "+this.pos);
+        // 84-86 320 steer, driving lane, normalized brake diff, unknown
+        this.readInt8(4);
+        // 324
+        console.log("end  at "+this.offset);
 
         
 
@@ -91,36 +87,36 @@ exports.Fh5Datagram = class {
     
     readInt32(n) {
         for(var i=0; i<n; i++) {
-            this.data[this.index++] = this.buffer.readInt32LE(this.pos);
-            this.pos += 4;
+            this.data[this.index++] = this.buffer.readInt32LE(this.offset);
+            this.offset += 4;
         }
     }
 
     readInt16(n) {
         for(var i=0; i<n; i++) {
-            this.data[this.index++] = this.buffer.readInt16LE(this.pos);
-            this.pos += 2;
+            this.data[this.index++] = this.buffer.readInt16LE(this.offset);
+            this.offset += 2;
         }
     }    
 
     readInt8(n) {
         for(var i=0; i<n; i++) {
-            this.data[this.index++] = this.buffer.readInt8(this.pos);
-            this.pos += 1;
+            this.data[this.index++] = this.buffer.readInt8(this.offset);
+            this.offset += 1;
         }
     }        
 
     readFloat(n) {
         for(var i=0; i<n; i++) {
-            this.data[this.index++] = this.buffer.readFloatLE(this.pos);
-            this.pos += 4;
+            this.data[this.index++] = this.buffer.readFloatLE(this.offset);
+            this.offset += 4;
         }
     }    
 
     readFloatAsInt(n) {
         for(var i=0; i<n; i++) {
-            this.data[this.index++] = Math.trunc(this.buffer.readFloatLE(this.pos)+0.5);
-            this.pos += 4;
+            this.data[this.index++] = Math.trunc(this.buffer.readFloatLE(this.offset)+0.5);
+            this.offset += 4;
         }
     }    
 
