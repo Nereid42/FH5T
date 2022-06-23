@@ -2,6 +2,6 @@ function delay(millis) {
     return new Promise(resolve => setTimeout(resolve, millis));
 }
 
-async function sleep(millis) {
+exports.sleep = async function(millis) {
     await delay(millis);
 }

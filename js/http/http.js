@@ -19,7 +19,6 @@ exports.HttpServer = class {
             var func =  this.registeredUrls[url];
             
             if(func !== undefined) {
-                console.log("calling "+func.name);
                 func(response);
             }
             else {
@@ -32,8 +31,6 @@ exports.HttpServer = class {
         const url = request.url;
         const path = this.root + request.url;
 
-        console.log("file request "+url);
-    
         var headerSecFetchDest = request.headers['sec-fetch-dest'];
 
         // check if file is existent
