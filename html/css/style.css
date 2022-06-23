@@ -38,12 +38,55 @@ footer {
     color: cornflowerblue;
 }
 
-canvas {
-   border-style: ridge; 
-   border-color:  darkturquoise;
-   border-width: 3px;
-   margin-top: 20px;
-   padding: 5px;
+canvas.telemetry {
+    display: inline-block;
+    width: 800px;
+    height: 150px;
+    border-style: ridge; 
+    border-color:  darkturquoise;
+    border-width: 3px;
+    margin-top: 3px;
+    padding: 5px;
+}
+
+div.telemetry {
+    display: inline-block;
+    margin: 3px;
+    background-color:coral ;
+    float:left;
+}
+
+p.telemetry-title {
+    font-size: 20px;
+    text-align: center;
+    margin: 0px;
+}
+
+
+div.label {
+    display:inline-block;
+    background-color: blue;
+    height: 150px;
+    margin:0px;
+    gap:0px;
+    padding: 0px;  
+}
+
+div.label p {
+    font-size: 12px;
+}
+
+p.top-label {
+    margin: 0px;
+    height: 100%;
+    vertical-align: text-top;
+    background-color: red;
+}
+
+p.bottom-label {
+    margin: 0px;
+    vertical-align: text-bottom;
+    margin-top: auto;
 }
 
 
@@ -79,6 +122,12 @@ div.error {
     height:100%;
     text-align: center;
     color:crimson;
+}
+
+div.content {
+    background-color:blue;
+    column-count: 3;
+    
 }
 
 div.banner {
