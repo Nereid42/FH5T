@@ -21,6 +21,15 @@
                 xhttp.onload = function() {
                     //console.log("update: "+this.responseText);
                     var token = this.responseText.split(" ");
+
+                    var m=""
+                    for(var i=0; i<token.length; i++) {
+                        m += i.toString()+": "+token[i].toString()+"<br>";
+                    }
+                    var dg = document.getElementById("datagram");
+                    dg.innerHTML = m; 
+
+
                     var race = document.getElementById("race");
                     if(token[0] == "1") {
                         race.style.backgroundColor = "#30FF30";
@@ -111,7 +120,20 @@
             </div>
         </div>
 
+        <style>
+            p#datagram {
+                width: 200px;
+                height: 1600px;
+                border: 3px solid black;
+                color: black;
+                background-color: white;
+                font-size: 9px;
+            }
+        </style>
         <div  id="content">
+            <p id="datagram" >
+
+            </p>
             <div class="telemetry-container">
                 <p class="telemetry-title">RPM</p>
                 <div>
