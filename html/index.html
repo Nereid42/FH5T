@@ -15,6 +15,11 @@
     <body>
         <script>
             const TELEMETRY_RPM = new Telemetry("RPM");
+            const TELEMETRY_GEAR = new Telemetry("Gear");
+            const TELEMETRY_TIRE_ANGLE_FL = new Telemetry("Tire Angle FL");
+            const TELEMETRY_TIRE_ANGLE_FR = new Telemetry("Tire Angle FR");
+            const TELEMETRY_TIRE_ANGLE_RL = new Telemetry("Tire Angle RL");
+            const TELEMETRY_TIRE_ANGLE_RR = new Telemetry("Tire Angle RR");
 
             function _update() {
                 const xhttp = new XMLHttpRequest();
@@ -22,12 +27,11 @@
                     //console.log("update: "+this.responseText);
                     var token = this.responseText.split(" ");
 
-                    var m=""
                     for(var i=0; i<token.length; i++) {
-                        m += i.toString()+": "+token[i].toString()+"<br>";
+                        var value = Math.trunc(token[i]*100)/100;
+                        td=document.getElementById(i.toString());
+                        td.innerHTML = value.toString();
                     }
-                    var dg = document.getElementById("datagram");
-                    dg.innerHTML = m; 
 
 
                     var race = document.getElementById("race");
@@ -46,6 +50,18 @@
                     TELEMETRY_RPM.sample(parseInt(sCurRpm));
                     var rpmCanvas = document.getElementById("rpm-canvas");
                     drawTelemetryAsBars(TELEMETRY_RPM, rpmCanvas, parseInt(sMaxRpm));
+
+                    // === Gear ===
+                    var gearCanvas = document.getElementById("gear-canvas");
+                    var sGear = token[DATA_INDEX_GEAR];
+                    var gear = parseInt(sGear)
+                    if(gear<0) {
+                        gear = 0;
+                    }
+                    TELEMETRY_GEAR.sample(gear);
+                    drawTelemetryAsBars(TELEMETRY_GEAR, gearCanvas, 10);
+
+                    // update
                     update();
                 }                
                 xhttp.open("GET", "datagram", true);
@@ -56,6 +72,28 @@
                 setTimeout(_update,10);
             }
 
+            function createDatagramTable() {
+                var table = document.getElementById("datagram-table");
+                var html =""
+                for(var r=0; r<5; r++) {
+                    html = html +"<tr>";
+                    const LINES_PER_ROW = 20;    
+                    for(var i=0; i<LINES_PER_ROW; i++)
+                    {
+                        var idx = r*LINES_PER_ROW+i;
+                        if(idx<10) {
+                            html = html +"<td>0"+idx+":</td>";
+                        } 
+                        else {
+                            html = html +"<td>"+idx+":</td>";
+                        }
+                        html = html +"<td id=\""+idx+"\" class=\"data\">0</td>";    
+                    }   
+                    html = html +"</tr>";
+                }
+                table.innerHTML = html;
+            }
+
 
             window.onbeforeunload = function(){
                 const xhttp = new XMLHttpRequest();
@@ -63,8 +101,10 @@
                 xhttp.send();
              }
             window.onload = function() {
-                var canvas1 = document.getElementById("canvas-1");
-                var canvas2 = document.getElementById("canvas-2");
+                // create datagram table contents
+                createDatagramTable();
+
+                //
                 var canvas3 = document.getElementById("canvas-3");
                 var canvas4 = document.getElementById("canvas-4");
                 var canvas5 = document.getElementById("canvas-5");
@@ -75,8 +115,6 @@
                 update();
 
                 function receiveData() {
-                    //TELEMETRY_RPM.sample(Math.random());
-                    drawTelemetryAsBars(TELEMETRY_RPM, canvas2, TELEMETRY_RPM.max);
                     drawTelemetryAsBars(TELEMETRY_RPM, canvas3, TELEMETRY_RPM.max);
                     drawTelemetryAsBars(TELEMETRY_RPM, canvas4, TELEMETRY_RPM.max);
                     drawTelemetryAsBars(TELEMETRY_RPM, canvas5, TELEMETRY_RPM.max);
@@ -84,6 +122,7 @@
                 }
 
                 setInterval(receiveData,30);
+
             };
 
             /* DEMO: function loadDoc() {
@@ -120,20 +159,7 @@
             </div>
         </div>
 
-        <style>
-            p#datagram {
-                width: 200px;
-                height: 1600px;
-                border: 3px solid black;
-                color: black;
-                background-color: white;
-                font-size: 9px;
-            }
-        </style>
         <div  id="content">
-            <p id="datagram" >
-
-            </p>
             <div class="telemetry-container">
                 <p class="telemetry-title">RPM</p>
                 <div>
@@ -146,14 +172,14 @@
                 </div>
             </div>
             <div class="telemetry-container">
-                <p class="telemetry-title">Reserved</p>
+                <p class="telemetry-title">Gear</p>
                 <div>
                     <div class="label">
-                            <p class="top-label">00000</p>
-                            <p class="bottom-label">0</p>
+                            <p class="top-label">10</p>
+                            <p class="bottom-label">R</p>
                         </p>
                     </div>
-                    <canvas class="telemetry" id="canvas-2" width="800" height="150"></canvas>                
+                    <canvas class="telemetry" id="gear-canvas" width="800" height="150"></canvas>                
                 </div>    
             </div>
             <div class="telemetry-container">
@@ -200,6 +226,44 @@
                     <canvas class="telemetry" id="canvas-6" width="800" height="150"></canvas>
                 </div>
             </div>    
-        </div>  
-    </body>
+            
+
+        <style>
+            footer {
+                position:fixed;
+                bottom:  0;
+                width: 100%;
+                height:85px;
+                color: white;
+                font-size: 11px;
+                background-color: grey;
+                border-spacing: 1;
+                padding: 0px;
+            }
+            table#datagram-table  {
+                width:100%;
+                position:relative;
+                table-layout:fixed;
+                top: 0px;
+                margin-top: 0px;
+            }
+            table#datagram-table tr td {
+                text-align: left;
+                margin:  0px;
+            }
+            table#datagram-table tr td.data {
+                text-align: left;
+                width: 75px;
+                padding: 0px;
+                margin: 0px;
+                background-color: #606070;
+                overflow: hidden;
+            }
+        </style>
+        <footer>
+            <table id="datagram-table">
+            </table>    
+        </footer>
+    </div>  <!-- content -->
+</body>
 </html>
